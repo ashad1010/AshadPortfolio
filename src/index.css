@@ -55,11 +55,30 @@
   }
 }
 
+/* NEW — skip-to-content link, keyboard/screen-reader users only */
+.skip-link {
+  position: fixed;
+  top: -100px;
+  left: 1rem;
+  z-index: 100;
+  background: #100a1c;
+  border: 1px solid rgba(0, 240, 255, 0.5);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 0.3rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.75rem;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
 /* ------------------------------------------------------------------ */
 /*  Atmosphere layers                                                  */
 /* ------------------------------------------------------------------ */
 @layer utilities {
-  /* Faint retro-tech grid — used sparingly as an atmosphere layer */
+  /* Faint retro-tech grid — used sparingly as an atmosphere layer, hero only */
   .grid-atmos {
     background-image:
       linear-gradient(to right, rgba(138, 138, 158, 0.06) 1px, transparent 1px),
@@ -114,12 +133,37 @@
       0 0 6px rgba(0, 240, 255, 0.55),
       0 0 20px rgba(0, 240, 255, 0.26);
   }
+  /* NEW — amber glow, Music page only */
+  .glow-amber {
+    text-shadow:
+      0 0 6px rgba(255, 170, 60, 0.55),
+      0 0 20px rgba(255, 170, 60, 0.26);
+  }
   .glow-soft {
     text-shadow: 0 0 10px rgba(255, 0, 127, 0.22);
   }
 
   .hairline {
     border-color: rgba(138, 138, 158, 0.22);
+  }
+
+  /* NEW — influences ticker (Music page) */
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 30s linear infinite;
+  }
+  .marquee-wrap:hover .marquee-track,
+  .marquee-wrap:focus-within .marquee-track {
+    animation-play-state: paused;
+  }
+
+  /* NEW — blocky pixel icons (Hobbies page) */
+  .pixel-icon {
+    shape-rendering: crispEdges;
+  }
+  .pixel-icon rect {
+    fill: currentColor;
   }
 }
 
@@ -141,7 +185,7 @@
     box-shadow: 0 0 14px rgba(0, 240, 255, 0.18);
   }
 
-  /* Project card */
+  /* Project / nav-preview card */
   .card {
     @apply relative rounded-md border border-silver/15 bg-void/70 backdrop-blur-sm
            transition-all duration-300;
@@ -199,14 +243,14 @@
     border-radius: 999px;
   }
 
-  /* Signal-chain node */
+  /* Chain node (used by both the Career roadmap and the Music signal chain) */
   .node {
     @apply relative rounded-md border bg-void/80 px-4 py-3 transition-all duration-300;
   }
 }
 
 /* ------------------------------------------------------------------ */
-/*  Signature: animated signal chain + waveform (raw CSS)              */
+/*  Signature: waveform + signal-chain primitives (raw CSS)            */
 /* ------------------------------------------------------------------ */
 
 /* Equalizer / waveform bars */
@@ -219,88 +263,18 @@
   animation: eqbar 1.1s ease-in-out infinite;
 }
 
-/* Traveling signal pulse — responsive (horizontal on desktop, vertical on mobile) */
-@keyframes flow-x {
-  0%   { left: 0%;   opacity: 0; }
-  12%  { opacity: 1; }
-  88%  { opacity: 1; }
-  100% { left: 100%; opacity: 0; }
-}
-@keyframes flow-y {
-  0%   { top: 0%;   opacity: 0; }
-  12%  { opacity: 1; }
-  88%  { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
-}
-.flow-dot {
-  position: absolute;
-  width: 8px;
-  height: 8px;
-  border-radius: 999px;
-  background: #00f0ff;
-  box-shadow: 0 0 10px 3px rgba(0, 240, 255, 0.75);
-}
-.flow-dot-h {
-  top: 50%;
-  transform: translate(-50%, -50%);
-  animation: flow-x 2.6s linear infinite;
-}
-.flow-dot-v {
-  left: 50%;
-  transform: translate(-50%, -50%);
-  animation: flow-y 2.6s linear infinite;
-}
-
-/* Connector wire dash flow */
-@keyframes dash-flow {
-  to { stroke-dashoffset: -24; }
-}
-.wire-flow {
-  stroke-dasharray: 5 7;
-  animation: dash-flow 1.2s linear infinite;
-}
-
-/* Node breathing when "live" */
-@keyframes node-live {
-  0%, 100% { box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.25), 0 0 22px -6px rgba(0, 240, 255, 0.3); }
-  50%      { box-shadow: 0 0 0 1px rgba(0, 240, 255, 0.6),  0 0 34px -4px rgba(0, 240, 255, 0.55); }
-}
-.node-live {
-  animation: node-live 2.6s ease-in-out infinite;
-}
-
-/* Cursor blink */
-@keyframes term-blink {
-  0%, 49% { opacity: 1; }
-  50%, 100% { opacity: 0; }
-}
-.cursor {
-  animation: term-blink 1.1s step-end infinite;
-}
-
-/* Grid drift (very slow) */
-@keyframes grid-drift {
-  from { background-position: 0 0; }
-  to   { background-position: 0 44px; }
-}
-
 /* ------------------------------------------------------------------ */
-/*  Reduced motion                                                     */
+/*  NEW — respect reduced-motion preferences                           */
 /* ------------------------------------------------------------------ */
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
   }
-  .scan-sweep::before,
-  .flow-dot,
-  .eqbar,
-  .wire-flow,
-  .node-live,
-  .cursor {
-    animation: none !important;
+  .marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    width: 100%;
   }
-  .flow-dot { opacity: 0.85; top: 50%; left: 50%; }
 }

@@ -15,7 +15,7 @@ function IconLink({ label, children }) {
 
 export default function Footer() {
   return (
-    <footer className="relative mt-24 border-t border-silver/12">
+    <footer className="relative mt-4 border-t border-silver/12">
       <div className="mx-auto max-w-6xl px-5 py-10 sm:px-8">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
           <div>
@@ -30,8 +30,8 @@ export default function Footer() {
 
           <div className="flex flex-wrap items-center gap-6">
             <IconLink label="GitHub">{'{ }'}</IconLink>
+            <IconLink label="LinkedIn">in</IconLink>
             <IconLink label="Email">@</IconLink>
-            <IconLink label="SoundCloud">~</IconLink>
           </div>
         </div>
 

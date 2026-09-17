@@ -8,8 +8,9 @@ export default {
         space: '#0a0512',     // secondary background
         void: '#100a1c',      // raised card surface
         surface: '#160e26',   // hover surface
-        magenta: '#ff007f',   // primary accent
-        cyan: '#00f0ff',      // secondary accent
+        magenta: '#ff007f',   // primary accent — career
+        cyan: '#00f0ff',      // secondary accent — systems / tech
+        amber: '#ffaa3c',     // NEW — tertiary accent, used only in Music
         silver: '#8a8a9e',    // hairlines / muted
         haze: '#9a94ad',      // muted body text
         bone: '#e8e6f0',      // primary text
@@ -21,6 +22,9 @@ export default {
       },
       letterSpacing: {
         widest2: '0.28em',
+      },
+      maxWidth: {
+        prose2: '62ch',
       },
       keyframes: {
         scan: {
@@ -53,6 +57,30 @@ export default {
           '0%': { backgroundPosition: '0 0' },
           '100%': { backgroundPosition: '0 44px' },
         },
+        /* NEW — page-switch reveal, plays once per nav change */
+        pageIn: {
+          from: { opacity: '0', transform: 'translateY(10px)' },
+          to: { opacity: '1', transform: 'translateY(0)' },
+        },
+        /* NEW — signal-chain / roadmap connector dots (simpler + more reliable
+           than the offset-path-based `travel` keyframe above) */
+        travelH: {
+          '0%': { left: '0%', opacity: '0' },
+          '10%': { opacity: '1' },
+          '90%': { opacity: '1' },
+          '100%': { left: '100%', opacity: '0' },
+        },
+        travelV: {
+          '0%': { top: '0%', opacity: '0' },
+          '10%': { opacity: '1' },
+          '90%': { opacity: '1' },
+          '100%': { top: '100%', opacity: '0' },
+        },
+        /* NEW — influences ticker on the Music page */
+        marquee: {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-50%)' },
+        },
       },
       animation: {
         scan: 'scan 7s linear infinite',
@@ -60,6 +88,10 @@ export default {
         pulseGlow: 'pulseGlow 2.4s ease-in-out infinite',
         blink: 'blink 1.1s step-end infinite',
         driftGrid: 'driftGrid 8s linear infinite',
+        pageIn: 'pageIn 0.5s ease both',
+        travelH: 'travelH 3.4s linear infinite',
+        travelV: 'travelV 3.4s linear infinite',
+        marquee: 'marquee 30s linear infinite',
       },
     },
   },
